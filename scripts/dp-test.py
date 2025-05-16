@@ -15,8 +15,9 @@ addresses = [
 for address in addresses:
     try:
         print(f"trying {address}")
-        sock = socket.create_connection((address, 22), timeout=5)
-        print("successful")
-        sock.close()
+        with socket.socket(socket.AF_INET6, socket.SOCK_STREAM) as s:
+            sock = s.connect((address, 22, 0, 0))
+            print("successful")
+            sock.close()
     except Exception as e:
         print(f"connection failed: {e}")
