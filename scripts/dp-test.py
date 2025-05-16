@@ -155,7 +155,7 @@ addresses = [
 
 tally = defaultdict(int)
 
-for i in range(0, 20):
+for i in range(0, 2):
     print(f"run {i}")
     for address in addresses:
         try:
@@ -164,8 +164,9 @@ for i in range(0, 20):
         except Exception as e:
             print(f"connection failed: {address}")
             tally[address] += 1
-    time.sleep(10)
+    time.sleep(20)
 
 print()
 print()
-print(tally)
+for k, v in tally.iteritems():
+    print(f"{k}: {v}")
