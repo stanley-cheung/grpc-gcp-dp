@@ -168,5 +168,5 @@ for i in range(0, 2):
 
 print()
 print()
-for k, v in tally.iteritems():
+for k, v in tally.items():
     print(f"{k}: {v}")
