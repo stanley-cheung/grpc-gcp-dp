@@ -1,4 +1,6 @@
+from collections import defaultdict
 import socket
+import time
 
 addresses = [
     ("2001:4860:8040:0826:0000:00ac:b96d:0488", 25381),
@@ -151,17 +153,19 @@ addresses = [
     ("2001:4860:8040:0826:0000:00ac:b96d:04df", 14507),
 ]
 
-fails = []
-for address in addresses:
-    try:
-        print(f"trying {address}")
-        sock = socket.create_connection(address, timeout=5)
-        print("successful")
-        sock.close()
-    except Exception as e:
-        print(f"connection failed: {e}")
-        fails.append(address)
+tally = defaultdict(int)
 
+for i in range(0, 20):
+    print(f"run {i}")
+    for address in addresses:
+        try:
+            sock = socket.create_connection(address, timeout=5)
+            sock.close()
+        except Exception as e:
+            print(f"connection failed: {address}")
+            tally[address] += 1
+    time.sleep(10)
 
-print("All the fails")
-print(fails)
+print()
+print()
+print(tally)
