@@ -1,0 +1,61 @@
+run 0
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 1
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 2
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 3
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 4
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 5
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 6
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 7
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 8
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 9
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 10
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 11
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 12
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 13
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 14
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 15
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 16
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 17
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170)
+run 18
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+run 19
+connection failed: ('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885)
+connection failed: ('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778)
+
+
+Out of 20 runs:
+
+('2001:4860:8040:0826:0000:00ad:03fc:1c23', 26170): 13
+('2001:4860:8040:0826:0000:00ac:efb0:4ed9', 14778): 11
+('2001:4860:8040:0826:0000:00ad:0b9d:1a65', 25885): 10
