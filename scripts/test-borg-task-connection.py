@@ -116,7 +116,7 @@ def run_script_in_vm() -> None:
         return
 
     print(f'Running script in {args.vm_name}')
-    print('Note: some task addresses may have become outdated between the time')
+    print('Note: Some task addresses may have become outdated between the time')
     print('      the gqui command was run and this query script is being run.')
     p = subprocess.Popen(
         [
