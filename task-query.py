@@ -1,6 +1,7 @@
 from collections import defaultdict
 import socket
 import time
+
 addresses = [
     ('2001:4860:8040:0826:0000:00ac:b953:bbae', 14514),
     ('2001:4860:8040:0826:0000:00ad:2609:ae07', 14667),
@@ -179,14 +180,14 @@ addresses = [
     ('2001:4860:8040:0826:0000:00ad:2a54:e8fe', 14172),
     ('2001:4860:8040:0826:0000:00ad:2a63:2b65', 14666),
     ('2001:4860:8040:0826:0000:00ad:2a63:2c5a', 26147),
-    ('2001:4860:8040:0826:0000:00ad:2a63:2c52', 14506),
 ]
+
 num_runs = 10
 failed_tally = defaultdict(int)
 for i in range(num_runs):
     num_succeeded = 0
     num_failed = 0
-    print(f"run {i+1}")
+    print(f"Run #{i+1}")
     for address in addresses:
         try:
             sock = socket.create_connection(address, timeout=5)
@@ -195,8 +196,15 @@ for i in range(num_runs):
             print(f"Connection failed: {address}")
             num_failed += 1
             failed_tally[address] += 1
-    print(f"num_succeeded: {num_succeeded}")
-    print(f"num_failed: {num_failed}")
-    time.sleep(10)
-for k, v in failed_tally.items():
-  print(f"{k} failed {v} times")
+    print(f"Connected: {num_succeeded}")
+    print(f"Failed: {num_failed}")
+    if i < num_runs - 1:
+        time.sleep(5)
+
+print()
+if failed_tally:
+    print("Report:")
+    for k, v in failed_tally.items():
+        print(f"Task {k} failed {v}/10 times")
+else:
+    print("No failed connections")
