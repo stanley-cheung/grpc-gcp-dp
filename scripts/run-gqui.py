@@ -3,8 +3,8 @@
 cell prefix mapping: https://source.corp.google.com/piper///depot/google3/net/fabric/ipv6/data/gdu/cell-prefix-mappings.data
 
 Sample usage:
-$ python3 run-gqui.py --cell=wv --cell_ipv6_prefix=2001:4860:8040:0826
-$ python3 run-gqui.py --cell=wi --cell_ipv6_prefix=2001:4860:8040:07b2
+$ python3 test-borg-task-connection.py --cell=wv --cell_ipv6_prefix=2001:4860:8040:0826
+$ python3 test-borg-task-connection.py --cell=wi --cell_ipv6_prefix=2001:4860:8040:07b2
 
 Optional parameters:
   --vm_name=VM_NAME           needs to be created with
@@ -116,8 +116,8 @@ def run_script_in_vm() -> None:
         return
 
     print(f'Running script in {args.vm_name}')
-    print('Note: some tasks may have just finished between the time the gqui')
-    print('      command was run and this query script is being run.')
+    print('Note: some task addresses may have become outdated between the time')
+    print('      the gqui command was run and this query script is being run.')
     p = subprocess.Popen(
         [
             "gcloud", "compute", "ssh", args.vm_name, f"--zone={args.zone}",
