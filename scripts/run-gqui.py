@@ -5,6 +5,7 @@ CELL_IPV6_PREFIX = "2001:4860:8040:0826"
 VM_NAME = "dp-sc-octant-vm-01-do-not-delete"
 ZONE = "us-central1-a"
 TASK_QUERY_SCRIPT_NAME = "task-query.py"
+NUM_RUNS = 10
 
 def query_cell_tasks(page: int):
     print(f"Querying cell {CELL} page {page}")
@@ -20,6 +21,7 @@ def query_cell_tasks(page: int):
         text=True,
     )
     if p.returncode:
+        print(f"Done with querying cell {CELL}")
         return False
     result = p.stdout.split()[1:]
     tasks = []
@@ -36,12 +38,14 @@ def query_cell_tasks(page: int):
 def write_script_to_file(tasks):
     with open(TASK_QUERY_SCRIPT_NAME, "w") as f:
         s = """import socket
+from collections import defaultdict
 addresses = [
 """
         for task in tasks:
             s += f"    ('{task['ipv6']}', {task['port']}),\n"
         s += """]
-num_runs = 10
+num_runs = """+str(NUM_RUNS)+"""
+failed_tally = defaultdict(int)
 for i in range(num_runs):
     num_succeeded = 0
     num_failed = 0
@@ -53,13 +57,16 @@ for i in range(num_runs):
         except Exception as e:
             print(f"Connection failed: {address}")
             num_failed += 1
+            failed_tally[address] += 1
     print(f"num_succeeded: {num_succeeded}")
     print(f"num_failed: {num_failed}")
+for k, v in failed_tally.items():
+  print(f"{k} failed {v} times")
 """
         f.write(s)
 
 def run_script_in_vm():
-    print('Copying script to VM')
+    print(f'Copying script to {VM_NAME}')
     p = subprocess.run(
         [
             "gcloud", "compute", "scp", TASK_QUERY_SCRIPT_NAME,
@@ -71,7 +78,7 @@ def run_script_in_vm():
     if p.returncode:
         print('gcloud compute scp failed. Exiting...')
         return
-    print('Running script in VM')
+    print(f'Running script in {VM_NAME}')
     p = subprocess.Popen(
         [
             "gcloud", "compute", "ssh", VM_NAME, f"--zone={ZONE}",
@@ -89,7 +96,7 @@ def main():
     while page_tasks := query_cell_tasks(page):
         tasks = tasks + page_tasks
         page += 1
-    print(f"Got {len(tasks)} total results")
+    print(f"Got {len(tasks)} total tasks in cell {CELL}")
     write_script_to_file(tasks)
     run_script_in_vm()
 
