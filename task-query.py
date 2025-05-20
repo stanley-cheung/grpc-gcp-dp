@@ -1,5 +1,6 @@
-import socket
 from collections import defaultdict
+import socket
+import time
 addresses = [
     ('2001:4860:8040:0826:0000:00ac:b953:bbae', 14514),
     ('2001:4860:8040:0826:0000:00ad:2609:ae07', 14667),
@@ -196,5 +197,6 @@ for i in range(num_runs):
             failed_tally[address] += 1
     print(f"num_succeeded: {num_succeeded}")
     print(f"num_failed: {num_failed}")
+    time.sleep(10)
 for k, v in failed_tally.items():
   print(f"{k} failed {v} times")

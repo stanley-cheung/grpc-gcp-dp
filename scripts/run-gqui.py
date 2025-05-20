@@ -6,6 +6,7 @@ VM_NAME = "dp-sc-octant-vm-01-do-not-delete"
 ZONE = "us-central1-a"
 TASK_QUERY_SCRIPT_NAME = "task-query.py"
 NUM_RUNS = 10
+NUM_SECS_BETWEEN_RUNS = 10
 
 def query_cell_tasks(page: int):
     print(f"Querying cell {CELL} page {page}")
@@ -37,8 +38,9 @@ def query_cell_tasks(page: int):
 
 def write_script_to_file(tasks):
     with open(TASK_QUERY_SCRIPT_NAME, "w") as f:
-        s = """import socket
-from collections import defaultdict
+        s = """from collections import defaultdict
+import socket
+import time
 addresses = [
 """
         for task in tasks:
@@ -60,6 +62,7 @@ for i in range(num_runs):
             failed_tally[address] += 1
     print(f"num_succeeded: {num_succeeded}")
     print(f"num_failed: {num_failed}")
+    time.sleep("""+str(NUM_SECS_BETWEEN_RUNS)+""")
 for k, v in failed_tally.items():
   print(f"{k} failed {v} times")
 """
@@ -76,7 +79,7 @@ def run_script_in_vm():
         text=True,
     )
     if p.returncode:
-        print('gcloud compute scp failed. Exiting...')
+        print(f'scp script to {VM_NAME} failed. Exiting...')
         return
     print(f'Running script in {VM_NAME}')
     p = subprocess.Popen(
