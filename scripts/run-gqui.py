@@ -2,6 +2,9 @@ import subprocess
 
 CELL = "wv"
 CELL_IPV6_PREFIX = "2001:4860:8040:0826"
+VM_NAME = "dp-sc-octant-vm-01-do-not-delete"
+ZONE = "us-central1-a"
+TASK_QUERY_SCRIPT_NAME = "task-query.py"
 
 def query_cell_tasks(page: int):
     print(f"Querying cell {CELL} page {page}")
@@ -31,11 +34,12 @@ def query_cell_tasks(page: int):
     return tasks
 
 def write_script_to_file(tasks):
-    with open("task-query.py", "w") as f:
+    with open(TASK_QUERY_SCRIPT_NAME, "w") as f:
         s = """import socket
 addresses = [
 """
-        s += "    ('google.com', 80)"
+        for task in tasks:
+            s += f"    ('{task['ipv6']}', {task['port']}),\n"
         s += """]
 for address in addresses:
     try:
@@ -47,30 +51,29 @@ for address in addresses:
         f.write(s)
 
 def run_script_in_vm():
-    print('Copying file to VM')
+    print('Copying script to VM')
     p = subprocess.run(
         [
-            "gcloud", "compute", "scp", "task-query.py",
-            "dp-sc-octant-vm-01-do-not-delete:~/",
-            "--zone=us-central1-a",
+            "gcloud", "compute", "scp", TASK_QUERY_SCRIPT_NAME,
+            f"{VM_NAME}:~/", f"--zone={ZONE}",
         ],
         capture_output=True,
         text=True,
     )
-    print(p.returncode)
+    if p.returncode:
+        print('gcloud compute scp failed. Exiting...')
+        return
     print('Running script in VM')
-    p = subprocess.run(
+    p = subprocess.Popen(
         [
-            "gcloud", "compute", "ssh",
-            "dp-sc-octant-vm-01-do-not-delete",
-            "--zone=us-central1-a",
-            "--",
-            "python3 ~/task-query.py",
+            "gcloud", "compute", "ssh", VM_NAME, f"--zone={ZONE}",
+            "--", f"python3 ~/{TASK_QUERY_SCRIPT_NAME}",
         ],
-        capture_output=True,
+        stdout=subprocess.PIPE,
         text=True,
     )
-    print(p.stdout)
+    while (l := p.stdout.readline()) != "":
+        print(l.rstrip())
 
 def main():
     tasks = []
@@ -78,8 +81,6 @@ def main():
     while page_tasks := query_cell_tasks(page):
         tasks = tasks + page_tasks
         page += 1
-    # for task in tasks:
-    #    print(f"{task['ipv6']} {task['port']}")
     print(f"Got {len(tasks)} total results")
     write_script_to_file(tasks)
     run_script_in_vm()
