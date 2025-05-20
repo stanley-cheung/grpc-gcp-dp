@@ -20,7 +20,7 @@ import subprocess
 args = None
 
 def query_cell_tasks(page: int) -> list:
-    print(f"Querying cell {args.cell} page {page}")
+    print(f"Querying cell {args.cell} page {page}...")
     p = subprocess.run(
         [
             'gqui',  'from',
@@ -85,9 +85,9 @@ print()
 if failed_tally:
     print("Report:")
     for k, v in failed_tally.items():
-        print(f"Task {k} failed {v}/"""+str(args.num_runs)+""" times")
+        print(f"Task {k} failed {v}/"""+str(args.num_runs)+""" times.")
 else:
-    print("No failed connections")
+    print("No failed connections.")
 """
         f.write(s)
 
@@ -102,7 +102,7 @@ def run_script_in_vm() -> None:
     project = p.stdout.rstrip()
     print(f'Current project: {project}')
 
-    print(f'Copying script to {args.vm_name}')
+    print(f'Copying script to VM {args.vm_name}...')
     p = subprocess.run(
         [
             "gcloud", "compute", "scp", args.task_query_script_name,
@@ -115,9 +115,11 @@ def run_script_in_vm() -> None:
         print(f'scp script to {args.vm_name} failed. Exiting...')
         return
 
-    print(f'Running script in {args.vm_name}')
+    print(f'Running script in {args.vm_name}...')
     print('Note: Some task addresses may have become outdated between the time')
     print('      the gqui command was run and this query script is being run.')
+    print(f'Running script {args.num_runs} times, {args.num_secs_between_runs} '
+          'seconds between runs...')
     p = subprocess.Popen(
         [
             "gcloud", "compute", "ssh", args.vm_name, f"--zone={args.zone}",
@@ -151,7 +153,7 @@ def main():
     while page_tasks := query_cell_tasks(page):
         tasks = tasks + page_tasks
         page += 1
-    print(f"Testing connection to {len(tasks)} tasks in cell {args.cell}")
+    print(f"Testing connection to {len(tasks)} tasks in cell {args.cell}...")
     write_script_to_file(tasks)
     run_script_in_vm()
 
