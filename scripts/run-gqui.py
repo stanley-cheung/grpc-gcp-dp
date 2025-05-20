@@ -41,12 +41,20 @@ addresses = [
         for task in tasks:
             s += f"    ('{task['ipv6']}', {task['port']}),\n"
         s += """]
-for address in addresses:
-    try:
-        sock = socket.create_connection(address, timeout=5)
-        print(f"Successful connecting to {address}")
-    except Exception as e:
-        print(f"Connection failed: {address}")
+num_runs = 10
+for i in range(num_runs):
+    num_succeeded = 0
+    num_failed = 0
+    print(f"run {i+1}")
+    for address in addresses:
+        try:
+            sock = socket.create_connection(address, timeout=5)
+            num_succeeded += 1
+        except Exception as e:
+            print(f"Connection failed: {address}")
+            num_failed += 1
+    print(f"num_succeeded: {num_succeeded}")
+    print(f"num_failed: {num_failed}")
 """
         f.write(s)
 
